@@ -1,6 +1,7 @@
 import {ReactNode, createContext } from 'react'
+import { api } from '../services/api'
 
-// Parte 1 - Criar context
+// INICIO Parte 1 - Criar context
 
 type SignInCredentials = {
   email: string,
@@ -14,7 +15,9 @@ type AuthContextData = {
 
 export const AuthContext = createContext({} as AuthContextData)
 
-// Parte 2 - Criar o provider do contexto
+// FIM Parte 1 - Criar context
+
+// INICIO Parte 2 - Criar o provider do contexto
 
 type AuthProviderProps = {
   children: ReactNode
@@ -24,8 +27,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = false;
 
   async function signIn({ email, password }: SignInCredentials) {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    console.log('1', { email, password})
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    try { 
+      const result = await  api.post('sessions', { email, password })
+      console.log(result)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -34,3 +42,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     </AuthContext.Provider>
   )
 }
+
+// FIM Parte 2 - Criar o provider do contexto
+
