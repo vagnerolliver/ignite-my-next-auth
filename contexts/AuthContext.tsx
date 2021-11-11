@@ -46,11 +46,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         
         setUser({ email, permissions, roles })
        
-        Router.push('dashboard')
+        // Router.push('dashboard')
       })
-      // .catch(error => {
-      //   console.log(error)
-      // })
     }
   },[])
 
