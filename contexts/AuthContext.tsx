@@ -39,12 +39,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const { 'nextauth.token': token } = parseCookies()
-
+    
     if (token) {
       api.get('/me').then(response => {
         const { email, permissions, roles } = response.data
+        
         setUser({ email, permissions, roles })
+       
+        Router.push('dashboard')
       })
+      // .catch(error => {
+      //   console.log(error)
+      // })
     }
   },[])
 
