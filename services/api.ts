@@ -1,6 +1,8 @@
 import { parseCookies, setCookie } from 'nookies' 
 import axios, { AxiosError } from "axios";
 
+import { signOut } from '../contexts/AuthContext';
+
 let cookies = parseCookies()
 
 export const api = axios.create({
@@ -72,7 +74,9 @@ api.interceptors.response.use(response => {
       })
 
     } else {
-      // deslogar
+      signOut()
     }
   }
+  
+  return Promise.reject(error)
 });

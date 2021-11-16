@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState, useEffect } from 'react'
-import { parseCookies, setCookie } from 'nookies'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import Router from 'next/router'
 
 import { api } from '../services/api'
@@ -27,6 +27,13 @@ export const AuthContext = createContext({} as AuthContextData)
 
 // FIM Parte 1 - Criar context
 
+export const signOut = () => {
+  destroyCookie(undefined, 'nextauth.token')
+  destroyCookie(undefined, 'nextauth.refreshToken')
+
+  Router.push('/')
+}
+
 // INICIO Parte 2 - Criar o provider do contexto
 
 type AuthProviderProps = {
@@ -47,6 +54,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser({ email, permissions, roles })
        
         // Router.push('dashboard')
+      })
+      .catch(() => {
+        signOut()
       })
     }
   },[])
