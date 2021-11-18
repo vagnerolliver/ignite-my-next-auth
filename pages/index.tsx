@@ -2,9 +2,11 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { FormEvent, useState, useContext } from 'react'
 import { parseCookies } from 'nookies'
 
+import { withSSRGuest } from '../utils/withSSRGuest'
 import { AuthContext } from '../contexts/AuthContext'
 
 import styles from '../styles/Home.module.css'
+import { redirect } from 'next/dist/server/api-utils'
 
 export default function Home() {
   const { signIn } = useContext(AuthContext)
@@ -34,20 +36,8 @@ export default function Home() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps  = async (context) => {
-  console.log(context.req.cookies)
-  const { 'nextauth.token': token } = parseCookies(context)
-
-  if (token) {
-    return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      },
-    }
-  }
-
+export const getServerSideProps = withSSRGuest(async (context) => {
   return {
     props: {}
   }
-}
+})
