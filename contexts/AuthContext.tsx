@@ -2,7 +2,7 @@ import { ReactNode, createContext, useState, useEffect } from 'react'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import Router from 'next/router'
 
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 
 // INICIO Parte 1 - Criar context
 
@@ -52,10 +52,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { email, permissions, roles } = response.data
         
         setUser({ email, permissions, roles })
-      })
-      .catch(() => {
-        signOut()
-      })
+      }).catch((error) => {
+        console.log(error)
+      })  
     }
   },[])
 

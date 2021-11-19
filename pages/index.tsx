@@ -1,12 +1,9 @@
-import type { GetServerSideProps, NextPage } from 'next'
 import { FormEvent, useState, useContext } from 'react'
-import { parseCookies } from 'nookies'
 
 import { withSSRGuest } from '../utils/withSSRGuest'
 import { AuthContext } from '../contexts/AuthContext'
 
-import styles from '../styles/Home.module.css'
-import { redirect } from 'next/dist/server/api-utils'
+import styles from '../styles/Home.module.css' 
 
 export default function Home() {
   const { signIn } = useContext(AuthContext)
@@ -22,9 +19,7 @@ export default function Home() {
       password,
     }
     
-    await signIn(data);
-
-    console.log('2', data)
+    await signIn(data); 
   }
 
   return (
