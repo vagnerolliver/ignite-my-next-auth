@@ -2,6 +2,7 @@ import { parseCookies, setCookie } from 'nookies'
 import axios, { AxiosError } from "axios";
 import { GetServerSidePropsContext } from 'next';
 
+import { AuthTokenError } from './errors/AuthTokenError';
 import { signOut } from '../contexts/AuthContext';
 
 type FailedRequestQueue = { 
@@ -59,7 +60,7 @@ export const setupAPIClient = (context: GetServerSidePropsContext = undefined) =
           }).catch(err => {
             failedRequestQueue.forEach(request => request.onFailure(err))
             failedRequestQueue = []
-            console.log(err)
+            
             if (process.browser) {
               signOut()
             }
@@ -75,7 +76,6 @@ export const setupAPIClient = (context: GetServerSidePropsContext = undefined) =
               resolve(api(originalConfig))
             },
             onFailure: (err) => {
-              console.log(err)
               reject(err)
             }
           })
@@ -84,6 +84,8 @@ export const setupAPIClient = (context: GetServerSidePropsContext = undefined) =
       } else {
         if (process.browser) {
           signOut()
+        } else {
+          return Promise.reject(new AuthTokenError())          
         }
       }
     }
