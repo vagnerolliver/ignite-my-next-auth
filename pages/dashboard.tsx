@@ -7,7 +7,7 @@ import { api } from '../services/apiClient'
 import { Can } from '../components/Can'
  
 export default function Dashboard() {
-  const { user } = useContext(AuthContext)
+  const { user, signOut } = useContext(AuthContext)
 
   useEffect(() => {
     api.get('/me')
@@ -18,6 +18,8 @@ export default function Dashboard() {
   return (
     <>
       <h1>Hello User: {JSON.stringify(user)}</h1>
+
+      <button onClick={signOut}> Sair </button>
       
       <Can roles={['administrator']}>
         <div>Métricas</div>
